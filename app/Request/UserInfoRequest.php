@@ -2,6 +2,7 @@
 namespace App\Request;
 
 use Hyperf\Validation\Request\FormRequest;
+use Hyperf\Validation\Rule;
 
 class UserInfoRequest extends FormRequest
 {
@@ -19,7 +20,7 @@ class UserInfoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|userCheck',
+            'user_id' => ['required',Rule::exists('sys_user','user_id')],
         ];
     }
 }

@@ -43,6 +43,44 @@ class Response
         return $this->response->json($data);
     }
 
+    public function successNotify($data = [])
+    {
+        $data = array_merge([
+            'code' => 0,
+            'msg' => 'success'
+        ],$this->parse_field($data));
+
+        return $this->response->json($data);
+    }
+
+    /**
+     * 主要用于将数据库中有下划线的字段转换为驼峰式命名
+     * 如role_id = roleId,create_user_id = createUserId
+     * */
+    public function parse_field($arr)
+    {
+        $array = [];
+        if (gettype($arr) == 'object') {
+            $arr = $arr->toArray();
+        }
+
+        foreach ($arr as $key => $val) {
+            //如果是数组代表是多重数组嵌套
+            if (is_array($val)) {
+                $array[$key] = $this->parse_field($val);
+            } elseif (gettype($val) == 'object') {
+                //可能数据是对象
+                $array[$key] = $this->parse_field($val->toArray());
+            } else {
+                $newKey = preg_replace_callback('/_+([a-z])/', function ($matches) {
+                    return strtoupper($matches[1]);
+                }, $key);
+                $array[$newKey] = $val;
+            }
+        }
+        return $array;
+    }
+
     /**
      * @param $data
      * @return PsrResponseInterface

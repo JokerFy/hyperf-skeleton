@@ -27,16 +27,11 @@ class SysUserController extends AbstractController
      */
     public function getInfo(UserInfoRequest $request)
     {
-        $validated = $request->validated();
-/*        $data = $request->validated();
-        return $this->response->success([
-            'user' => $data
-        ]);*/
-        $model = $this->sysUserService->getInfo(1);
-        $format = SysUserFormatter::instance()->forArray($model);
+        $user_id = $request->validated()['user_id'];
+        $model = $this->sysUserService->getInfo($user_id);
 
-        return $this->response->success([
-            'user' => $format
+        return $this->response->successNotify([
+            'user' => $model
         ]);
     }
 }
