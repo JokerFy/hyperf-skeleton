@@ -17,6 +17,13 @@ Router::addServer('websocket', function () {
     Router::get('/', 'App\Controller\WebSocketController');
 });
 
+Router::addServer('http', function () {
+    Router::post('/sys/login', 'App\Controller\Admin\SysUserController@login');
+});
+
+
 Router::addGroup('/hy-admin/', function () {
     Router::get('sys/user/info/{id:\d+}', 'App\Controller\Admin\SysUserController@getInfo'); // 获取用户信息
-});
+}, ['middleware' => [\App\Middleware\JwtAuthMiddleware::class]]);
+
+

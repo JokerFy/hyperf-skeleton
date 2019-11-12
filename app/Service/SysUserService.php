@@ -29,12 +29,4 @@ class SysUserService
         return $data;
     }
 
-    public function userCheck($id)
-    {
-        $data = $this->sysUser::get($id);
-        if(!$data){
-            return false;
-        }
-        return true;
-    }
 }
