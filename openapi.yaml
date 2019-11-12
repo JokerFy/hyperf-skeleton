@@ -1,0 +1,44 @@
+openapi: 3.0.0
+info:
+  title: 'My First API'
+  version: '0.1'
+paths:
+  /sys/login:
+    get:
+      summary: 用户登录
+      operationId: 'App\Controller\Admin\SysUserController::login'
+      responses:
+        '200': {  }
+    parameters:
+      -
+        name: username
+        in: formData
+        description: 用户名
+        required: true
+        type: string
+        format: string
+      -
+        name: password
+        in: formData
+        description: 用户密码
+        required: true
+        type: number
+        format: number
+    description: 用户登录
+  /hy-admin/sys/user/info:
+    get:
+      summary: 获取用户信息
+      operationId: 'App\Controller\Admin\SysUserController::getInfo'
+      responses:
+        '200': {  }
+    parameters:
+      -
+        name: id
+        in: query
+        description: 用户id
+        required: true
+        type: integer
+        format: int64
+    description: 一个用户列表
+tags:
+  - 用户相关
