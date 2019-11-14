@@ -4,6 +4,8 @@ declare (strict_types=1);
 namespace App\Model;
 
 use Hyperf\DbConnection\Model\Model;
+use App\Service\CommonService;
+use Hyperf\Di\Annotation\Inject;
 
 /**
  * @property int $user_id
@@ -20,6 +22,14 @@ use Hyperf\DbConnection\Model\Model;
  */
 class SysUser extends Model
 {
+
+    /**
+     * @Inject
+     * @var CommonService
+     */
+    protected $commonService;
+
+    public $timestamps = false;
     /**
      * The table associated with the model.
      *
@@ -31,7 +41,7 @@ class SysUser extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['username','password','salt','email','mobile','create_user_id','status'];
     /**
      * The attributes that should be cast to native types.
      *
@@ -44,13 +54,9 @@ class SysUser extends Model
     //用户有哪些角色(多对多)
     public function roles()
     {
-        return $this->belongsToMany(SysRole::class,'sys_user_role','role_id','user_id');
+        return $this->belongsToMany(SysRole::class,'sys_user_role','user_id','role_id');
     }
 
-    //用户的token
-    public function usertoken(){
-        return $this->hasOne('Token','user_id','user_id');
-    }
 
     //判断是否有哪些角色
     public function isInRoles($roles)
@@ -62,7 +68,7 @@ class SysUser extends Model
     //给用户分配角色
     public function assignRole($role)
     {
-        return $this->roles()->save($role);
+        return $this->roles()->attach($role);
     }
 
     //取消用户分配的角色
@@ -77,5 +83,36 @@ class SysUser extends Model
     {
         return $this->isInRoles($permission->roles);
     }
+
+    //创建一个管理员并保存
+    public function createUser($data){
+        $salt = $this->commonService->getRandChar(20);
+        $res = $this->create([
+            'username' => $data['username'],
+            'password' => $this->commonService->setPassword($data['password'], $salt),
+            'salt' => $salt,
+            'status'=>$data['status'],
+            'mobile'=>$data['mobile'],
+            'email'=>$data['email'],
+            'create_user_id'=>1
+        ]);
+        return $res->user_id;
+    }
+
+    //更新管理员
+    public function updateUser($data){
+        $salt = $this->commonService->getRandChar(20);
+        $user = self::query()->find($data['user_id']);
+        $res = $user->update([
+            'username' => $data['username'],
+            'password' => $this->commonService->setpassword($data['password'], $salt),
+            'salt' => $salt,
+            'status'=>$data['status'],
+            'mobile'=>$data['mobile'],
+            'email'=>$data['email'],
+        ]);
+        return $res;
+    }
+
 
 }

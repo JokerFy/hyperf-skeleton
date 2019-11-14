@@ -11,7 +11,7 @@ namespace App\Middleware;
 use App\Exception\TokenException;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface as HttpResponse;
-use Phper666\JwtAuth\Exception\JWTException;
+use Hyperf\Logger\Logger;
 use Phper666\JwtAuth\Jwt;
 use Hyperf\Di\Annotation\Inject;
 use Psr\Container\ContainerInterface;
@@ -44,6 +44,12 @@ class JwtAuthMiddleware
      */
     protected $response;
 
+    /**
+     * @Inject
+     * @var Logger
+     */
+    protected $logger;
+
     public function __construct(ContainerInterface $container, HttpResponse $response, RequestInterface $request)
     {
         $this->container = $container;
@@ -54,7 +60,7 @@ class JwtAuthMiddleware
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // 根据具体业务判断逻辑走向，这里假设用户携带的token有效
-        $request->getHeaders('token');
+        $token = $request->getHeaders()['token'];
         try{
             $isValidToken = $this->jwt->checkToken();
         }catch (\Exception $e){

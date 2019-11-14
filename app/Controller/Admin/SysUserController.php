@@ -8,18 +8,22 @@
 
 namespace App\Controller\Admin;
 
-use App\Request\LoginRequest;
+use App\Model\SysUser;
 use App\Request\UserInfoRequest;
+use App\Service\CommonService;
 use Hyperf\Di\Annotation\Inject;
 use App\Controller\AbstractController;
 use App\Service\SysUserService;
 
+use Hyperf\HttpServer\Contract\RequestInterface;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Annotations\Parameter;
 use OpenApi\Annotations\Get;
 use OpenApi\Annotations\Response;
+use Phper666\JwtAuth\Jwt;
+
 /**
  * @OpenApi(
  *     @Info(title="My First API", version="0.1")
@@ -34,29 +38,45 @@ class SysUserController extends AbstractController
     protected $sysUserService;
 
     /**
-     * 用户登录
-     * @OpenApi(
-     *     tags={"用户相关"},
-     *     @PathItem(
-     *       @Get(
-     *          @Response(response="200")
-     *       ),
-     *       path="/sys/login",
-     *       description="用户登录",
-     *       @Parameter(name="username",in="formData",description="用户名",required=true,type="string",format="string"),
-     *       @Parameter(name="password",in="formData",description="用户密码",required=true,type="number",format="number"),
-     *     ),
-     * )
+     * @Inject
+     * @var SysUser
      */
-    public function login(LoginRequest $request,Jwt $jwt)
+    protected $sysUser;
+
+    /**
+     * @Inject
+     * @var Jwt
+     */
+    protected $jwt;
+
+    public function list($page = 1, $limit = 10)
     {
-        //验证参数
-        $data = $request->validated();
-        //验证用户账号密码
-        $admin = $request->loginValidate($data);
-        $token = (string)$jwt->getToken($admin);
-        //获取用户token并返回
-        return $this->response->json(['token'=>$token]);
+        $listQuery = $this->request->getQueryParams();
+        $data = $this->sysUserService->pageList($listQuery, $page, $limit);
+        return $this->response->successNotify($data);
+    }
+
+    //增加用户
+    public function save()
+    {
+        $data = $this->request->post();
+        $this->sysUserService->save($data);
+        return $this->response->successNotify();
+    }
+
+    //更新用户
+    public function update(UserInfoRequest $request)
+    {
+        $this->sysUserService->update($request->validated());
+        return $this->response->successNotify();
+    }
+
+    //删除用户(可批量)
+    public function delete()
+    {
+        $ids = $this->request->post("ids");
+        $this->sysUserService->delete($ids);
+        return $this->response->successNotify();
     }
 
     /**
@@ -68,18 +88,39 @@ class SysUserController extends AbstractController
      *          @Response(response="200")
      *       ),
      *       path="/hy-admin/sys/user/info",
-     *       description="一个用户列表",
+     *       description="",
      *       @Parameter(name="id",in="query",description="用户id",required=true,type="integer",format="int64"),
      *     ),
      * )
      */
-    public function getInfo(UserInfoRequest $request)
+    public function getInfo(Jwt $jwt)
     {
-        $user_id = $request->validated()['user_id'];
+        $user_id = $jwt->getParserData()['user_id'];
+
         $model = $this->sysUserService->getInfo($user_id);
 
-        return $this->response->json([
+        return $this->response->successNotify([
             'user' => $model
         ]);
     }
+
+    public function getInfoById(UserInfoRequest $request)
+    {
+        $user_id = $request->validated()['id'];
+        $model = $this->sysUserService->getInfo($user_id);
+
+        return $this->response->successNotify([
+            'user' => $model
+        ]);
+    }
+
+    public function test($id, RequestInterface $request)
+    {
+        $token = $request->getHeaders()['token'];
+        return $this->response->json($request->getHeaders());
+        return $this->response->json([
+            'user' => $id
+        ]);
+    }
+
 }

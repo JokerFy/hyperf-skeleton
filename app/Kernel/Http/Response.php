@@ -36,7 +36,7 @@ class Response
     public function success($data = [])
     {
         $data = array_merge([
-            'code' => 0,
+            'code' => 20000,
             'msg' => 'success'
         ], $data);
 
@@ -46,7 +46,7 @@ class Response
     public function successNotify($data = [])
     {
         $data = array_merge([
-            'code' => 0,
+            'code' => 20000,
             'msg' => 'success'
         ],$this->parse_field($data));
 

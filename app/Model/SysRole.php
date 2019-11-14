@@ -33,4 +33,36 @@ class SysRole extends Model
     protected $casts = ['role_id' => 'integer', 'create_user_id' => 'integer'];
 
     protected $primaryKey = "role_id";
+
+    public function users()
+    {
+        return $this->belongsToMany(SysUser::class);
+    }
+
+    //当前角色的所有权限
+    public function permissions()
+    {
+        return $this->belongsToMany(SysMenu::class, 'sys_role_menu', 'role_id', 'menu_id');
+    }
+
+
+    //给角色赋予权限
+    public function grantPermission($permission)
+    {
+        return $this->permissions()->attach($permission);
+    }
+
+    //取消角色赋予的权限
+    public function deletePermission($permission)
+    {
+        return $this->permissions()->detach($permission);
+    }
+
+    //判断角色是否有权限
+    public function hasPermission($permission)
+    {
+        //判断集合中是否有某个对象
+        return $this->permissions->contains($permission);
+    }
+
 }

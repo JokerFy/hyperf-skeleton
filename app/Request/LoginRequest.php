@@ -6,8 +6,6 @@ namespace App\Request;
 
 use App\Constants\ErrorCode;
 use App\Exception\ParameterException;
-use App\Exception\ParamException;
-use App\Exception\Handler\BaseException;
 use App\Model\SysUser;
 use App\Kernel\Http\Response;
 use App\Service\CommonService;

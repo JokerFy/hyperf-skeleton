@@ -20,7 +20,7 @@ class UserInfoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required',Rule::exists('sys_user','user_id')],
+            'id' => ['required',Rule::exists('sys_user','user_id')],
         ];
     }
 }
