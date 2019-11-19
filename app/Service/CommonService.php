@@ -9,6 +9,8 @@
 namespace App\Service;
 
 
+use Phper666\JwtAuth\Jwt;
+
 class CommonService
 {
     // 密码加密

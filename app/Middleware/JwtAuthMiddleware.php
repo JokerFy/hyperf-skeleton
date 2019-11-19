@@ -27,7 +27,6 @@ class JwtAuthMiddleware
      */
     protected $container;
 
-
     /**
      * @Inject
      * @var Jwt
@@ -60,7 +59,6 @@ class JwtAuthMiddleware
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // 根据具体业务判断逻辑走向，这里假设用户携带的token有效
-        $token = $request->getHeaders()['token'];
         try{
             $isValidToken = $this->jwt->checkToken();
         }catch (\Exception $e){

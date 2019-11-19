@@ -15,8 +15,8 @@ return [
         'http' => [
             App\Exception\Handler\AppExceptionHandler::class,
 //            \Hyperf\Validation\ValidationExceptionHandler::class,
+            \App\Exception\Handler\ApiExceptionHandler::class,
             \App\Exception\Handler\ValidationExceptionHandler::class,
-            \App\Exception\Handler\ApiExceptionHandler::class
         ],
     ],
 ];

@@ -24,7 +24,7 @@ class SysRole extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['role_name','remark','create_user_id'];
     /**
      * The attributes that should be cast to native types.
      *
@@ -33,6 +33,8 @@ class SysRole extends Model
     protected $casts = ['role_id' => 'integer', 'create_user_id' => 'integer'];
 
     protected $primaryKey = "role_id";
+
+    public $timestamps = false;
 
     public function users()
     {
@@ -50,6 +52,12 @@ class SysRole extends Model
     public function grantPermission($permission)
     {
         return $this->permissions()->attach($permission);
+    }
+
+    //取消角色与用户关联
+    public function deleteUser($id)
+    {
+        return $this->users()->detach($id);
     }
 
     //取消角色赋予的权限

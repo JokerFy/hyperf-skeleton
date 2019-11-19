@@ -9,6 +9,7 @@
 namespace App\Controller\Admin;
 
 use App\Model\SysUser;
+use App\Request\SysMenuRequest;
 use App\Service\CommonService;
 use App\Service\SysMenuService;
 use Hyperf\Di\Annotation\Inject;
@@ -38,9 +39,9 @@ class SysMenuController extends AbstractController
     }
 
     //获得菜单信息
-    public function info($id)
+    public function info(SysMenuRequest $request)
     {
-        $data = $this->sysMenuService->info($id);
+        $data = $this->sysMenuService->info($request->validated()['id']);
         return $this->response->successNotify($data);
     }
 
@@ -52,26 +53,23 @@ class SysMenuController extends AbstractController
     }
 
     //添加菜单
-    public function save()
+    public function save(SysMenuRequest $request)
     {
-        $data = $this->request->post();
-        $this->sysMenuService->save($data);
+        $this->sysMenuService->save($request->validated());
         return $this->response->successNotify();
     }
 
     //修改菜单
-    public function update()
+    public function update(SysMenuRequest $request)
     {
-        $data = $this->request->post();
-        $this->sysMenuService->update($data);
+        $this->sysMenuService->update($request->validated());
         return $this->response->successNotify();
     }
 
     //删除菜单（如果有子菜单则一起删除，包括中间表和菜单表）
-    public function delete()
+    public function delete(SysMenuRequest $request)
     {
-        $id = $this->request->post('id');
-        $this->sysMenuService->delete($id);
+        $this->sysMenuService->delete($request->validated()['id']);
         return $this->response->successNotify();
     }
 

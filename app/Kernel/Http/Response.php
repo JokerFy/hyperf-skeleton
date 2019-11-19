@@ -39,7 +39,6 @@ class Response
             'code' => 20000,
             'msg' => 'success'
         ], $data);
-
         return $this->response->json($data);
     }
 

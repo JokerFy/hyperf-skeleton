@@ -10,9 +10,16 @@ namespace App\Service;
 use App\Model\sysRole;
 use Hyperf\Di\Annotation\Inject;
 use App\Service\CommonService;
+use Phper666\JwtAuth\Jwt;
 
 class SysRoleService
 {
+
+    /**
+     * @Inject
+     * @var Jwt
+     */
+    protected $jwt;
 
     /**
      * @Inject
@@ -43,6 +50,10 @@ class SysRoleService
      * @return mixed
      */
     public function pageList($listQuery,$page = 1, $limit = 10){
+        $admin_id = $this->jwt->getParserData()['user_id'];
+        if($admin_id != 1){
+            $listQuery["create_user_id"] = $admin_id;
+        }
         $data = $this->commonService->pageList($this->sysRole,$listQuery, $page, $limit);
         return $data;
     }
@@ -118,8 +129,10 @@ class SysRoleService
         foreach ($roles as $key => $val) {
             //获取当前角色的所有权限
             $rolePermission = $val->permissions;
+            $roleUsers = $val->users;
             //删除角色中间表中的权限
             $val->deletePermission($rolePermission);
+            $val->deleteUser($roleUsers);
             //删除角色
             $val->delete();
         }

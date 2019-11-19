@@ -8,6 +8,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Request\SysRoleRequest;
 use App\Service\CommonService;
 use App\Service\SysRoleService;
 use Hyperf\Di\Annotation\Inject;
@@ -37,9 +38,9 @@ class SysRoleController extends AbstractController
     }
 
     //获得角色信息
-    public function info($id)
+    public function info(SysRoleRequest $request)
     {
-        $data = $this->roleService->info($id);
+        $data = $this->roleService->info($request->validated()['id']);
         return $this->response->successNotify($data);
     }
 
@@ -52,26 +53,23 @@ class SysRoleController extends AbstractController
     }
 
     //添加角色
-    public function save()
+    public function save(SysRoleRequest $request)
     {
-        $data = $this->request->post();
-        $this->roleService->save($data);
+        $this->roleService->save($request->validated());
         return $this->response->successNotify();
     }
 
     //修改角色
-    public function update()
+    public function update(SysRoleRequest $request)
     {
-        $data = $this->request->post();
-        $this->roleService->update($data);
+        $this->roleService->update($request->validated());
         return $this->response->successNotify();
     }
 
     //删除角色
-    public function delete()
+    public function delete(SysRoleRequest $request)
     {
-        $id = $this->request->post('id');
-        $this->roleService->delete($id);
+        $this->roleService->delete($request->validated()['id']);
         return $this->response->successNotify();
     }
 

@@ -47,7 +47,7 @@ class SysUser extends Model
      *
      * @var array
      */
-    protected $casts = ['user_id' => 'integer', 'create_user_id' => 'integer'];
+    protected $casts = ['user_id' => 'integer', 'create_user_id' => 'integer', 'status' => 'integer'];
 
     protected $primaryKey = "user_id";
 

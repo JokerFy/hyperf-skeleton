@@ -32,9 +32,9 @@ Router::addGroup('/hy-admin/', function () {
     // 添加用户
     Router::post('sys/user/save', 'App\Controller\Admin\SysUserController@save');
     // 删除用户
-    Router::post('sys/user/delete', 'App\Controller\Admin\SysUserController@delete');
+    Router::delete('sys/user/delete', 'App\Controller\Admin\SysUserController@delete');
     // 更新用户
-    Router::post('sys/user/update', 'App\Controller\Admin\SysUserController@update');
+    Router::put('sys/user/update', 'App\Controller\Admin\SysUserController@update');
 
 
     // 获取导航菜单列表 / 权限
@@ -44,13 +44,13 @@ Router::addGroup('/hy-admin/', function () {
     // 获取上级菜单
     Router::get('sys/menu/select', 'App\Controller\Admin\SysMenuController@select');
     // 获取菜单信息
-    Router::get('sys/menu/info/{id:\d+}', 'App\Controller\Admin\SysMenuController@info');
+    Router::get('sys/menu/info', 'App\Controller\Admin\SysMenuController@info');
     // 添加菜单
     Router::post('sys/menu/save', 'App\Controller\Admin\SysMenuController@save');
     // 修改菜单
-    Router::post('sys/menu/update', 'App\Controller\Admin\SysMenuController@update');
+    Router::put('sys/menu/update', 'App\Controller\Admin\SysMenuController@update');
     // 删除菜单
-    Router::post('sys/menu/delete', 'App\Controller\Admin\SysMenuController@delete');
+    Router::delete('sys/menu/delete', 'App\Controller\Admin\SysMenuController@delete');
 
 
     // 获取角色列表
@@ -58,16 +58,16 @@ Router::addGroup('/hy-admin/', function () {
     // 获取角色列表, 根据当前用户
     Router::get('sys/role/select', 'App\Controller\Admin\SysRoleController@select');
     // 获取角色信息
-    Router::get('sys/role/info/{id:\d+}', 'App\Controller\Admin\SysRoleController@info');
+    Router::get('sys/role/info', 'App\Controller\Admin\SysRoleController@info');
     // 添加角色
     Router::post('sys/role/save', 'App\Controller\Admin\SysRoleController@save');
     // 修改角色
-    Router::post('sys/role/update', 'App\Controller\Admin\SysRoleController@update');
+    Router::put('sys/role/update', 'App\Controller\Admin\SysRoleController@update');
     // 删除角色
-    Router::post('sys/role/delete', 'App\Controller\Admin\SysRoleController@delete');
+    Router::delete('sys/role/delete', 'App\Controller\Admin\SysRoleController@delete');
 
-    Router::get('sys/user/test', 'App\Controller\Admin\SysUserController@test'); // 获取用户列表
-});
+    Router::post('sys/user/test', 'App\Controller\Admin\SysUserController@test'); // 获取用户列表
+},['middleware' => [\App\Middleware\AdminMiddleware::class]]);
 //, ['middleware' => [\App\Middleware\JwtAuthMiddleware::class]]);
 
 

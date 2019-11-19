@@ -25,19 +25,29 @@ class ValidationExceptionHandler extends ExceptionHandler
 
     public function handle(Throwable $throwable, ResponseInterface $response)
     {
-        $this->stopPropagation();
-        /** @var \Hyperf\Validation\ValidationException $throwable */
-        $body = $throwable->validator->errors()->first();
-        $arr = [
-            'code'=>'40000',
-            'msg' => $body
-        ];
-        return $this->response->json($arr);
+        // 判断被捕获到的异常是希望被捕获的异常
+        if ($throwable instanceof ValidationException) {
+            /** @var \Hyperf\Validation\ValidationException $throwable */
+            $body = $throwable->validator->errors()->first();
+            $arr = [
+                'code' => 41000,
+                'msg' => $body
+            ];
+            // 阻止异常冒泡
+            $this->stopPropagation();
+            return $this->response->json($arr);
+        }
+        // 交给下一个异常处理器
+        return $response;
     }
 
     public function isValid(Throwable $throwable): bool
     {
-        return $throwable instanceof ValidationException;
+        if($throwable instanceof ValidationException){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 

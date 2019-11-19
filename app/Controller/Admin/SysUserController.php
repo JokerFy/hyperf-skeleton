@@ -9,7 +9,8 @@
 namespace App\Controller\Admin;
 
 use App\Model\SysUser;
-use App\Request\UserInfoRequest;
+use App\Request\TestRequest;
+use App\Request\SysUserRequest;
 use App\Service\CommonService;
 use Hyperf\Di\Annotation\Inject;
 use App\Controller\AbstractController;
@@ -57,25 +58,25 @@ class SysUserController extends AbstractController
     }
 
     //增加用户
-    public function save()
+    public function save(SysUserRequest $request)
     {
-        $data = $this->request->post();
-        $this->sysUserService->save($data);
+        $this->sysUserService->save($request->validated());
         return $this->response->successNotify();
     }
 
     //更新用户
-    public function update(UserInfoRequest $request)
+    public function update(SysUserRequest $request)
     {
+//        return $this->response->successNotify($this->request->all());
+        return $this->response->successNotify($request->validated());
         $this->sysUserService->update($request->validated());
         return $this->response->successNotify();
     }
 
     //删除用户(可批量)
-    public function delete()
+    public function delete(SysUserRequest $request)
     {
-        $ids = $this->request->post("ids");
-        $this->sysUserService->delete($ids);
+        $this->sysUserService->delete($request->validated()['id']);
         return $this->response->successNotify();
     }
 
@@ -104,20 +105,17 @@ class SysUserController extends AbstractController
         ]);
     }
 
-    public function getInfoById(UserInfoRequest $request)
+    public function getInfoById(SysUserRequest $request)
     {
-        $user_id = $request->validated()['id'];
-        $model = $this->sysUserService->getInfo($user_id);
+        $model = $this->sysUserService->getInfo($request->validated()['id']);
 
         return $this->response->successNotify([
             'user' => $model
         ]);
     }
 
-    public function test($id, RequestInterface $request)
+    public function test($id, TestRequest $request)
     {
-        $token = $request->getHeaders()['token'];
-        return $this->response->json($request->getHeaders());
         return $this->response->json([
             'user' => $id
         ]);
