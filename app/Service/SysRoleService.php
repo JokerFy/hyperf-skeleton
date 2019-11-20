@@ -112,7 +112,6 @@ class SysRoleService
         foreach ($roleMenu->toArray() as $menu) {
             $roleMenus[] = $menu['menu_id'];
         }
-
         //将上传来的角色列表和我们转换后的角色列表转换成集合，然后利用集合的差集算出需要增加和删除的权限有哪些
         $roleMenus = collect($roleMenus);
         $updateMenu = collect($data['menuIdList']);

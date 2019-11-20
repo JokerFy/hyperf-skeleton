@@ -38,7 +38,7 @@ class SysRole extends Model
 
     public function users()
     {
-        return $this->belongsToMany(SysUser::class);
+        return $this->belongsToMany(SysUser::class,'sys_user_role','role_id','user_id');
     }
 
     //当前角色的所有权限
