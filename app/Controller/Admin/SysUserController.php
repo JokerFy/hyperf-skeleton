@@ -67,8 +67,6 @@ class SysUserController extends AbstractController
     //更新用户
     public function update(SysUserRequest $request)
     {
-//        return $this->response->successNotify($this->request->all());
-        return $this->response->successNotify($request->validated());
         $this->sysUserService->update($request->validated());
         return $this->response->successNotify();
     }

@@ -8,6 +8,7 @@
 
 namespace App\Exception\Handler;
 
+use App\Exception\RequestException;
 use App\Kernel\Http\Response;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;

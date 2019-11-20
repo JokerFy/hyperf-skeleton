@@ -7,6 +7,7 @@
  */
 
 namespace App\Exception\Handler;
+use App\Constants\ErrorCode;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Hyperf\Utils\Context;
@@ -38,7 +39,7 @@ class ValidationExceptionHandler extends ExceptionHandler
             /** @var \Hyperf\Validation\ValidationException $throwable */
             $body = $throwable->validator->errors()->first();
             $arr = json_encode([
-                'code' => 41000,
+                'code' => ErrorCode::PARAMS_INVALID,
                 'msg' => $body
             ]);
             // 阻止异常冒泡

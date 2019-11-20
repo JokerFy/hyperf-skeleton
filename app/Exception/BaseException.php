@@ -31,6 +31,10 @@ class BaseException extends ServerException
         }
         if(array_key_exists('msg',$params)){
             $this->msg = $params['msg'];
+        }else{
+            if (is_null($params['msg'])) {
+                $this->msg = ErrorCode::getMessage($this->code);
+            }
         }
         if(array_key_exists('statusCode',$params)){
             $this->statusCode = $params['statusCode'];

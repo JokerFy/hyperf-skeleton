@@ -23,40 +23,41 @@ class ErrorCode extends AbstractConstants
     /**
      * @Message("Server Error！")
      */
-    const SERVER_ERROR = 500;
+    const SERVER_ERROR = 50000;
 
     /**
      * @Message("Token已失效")
      */
-    const TOKEN_INVALID = 700;
+    const TOKEN_INVALID = 70000;
 
     /**
      * @Message("用户没有注册")
      */
-    const USER_NOT_REGIST = 701;
+    const USER_NOT_REGIST = 70001;
 
     /**
      * @Message("参数错误")
      */
-    const PARAMS_INVALID = 1000;
+    const PARAMS_INVALID = 10000;
 
     /**
      * @Message("用户不存在")
      */
-    const USER_NOT_EXIST = 1001;
+    const USER_NOT_EXIST = 10001;
 
     /**
      * @Message("用户越权操作")
      */
-    const USER_INVALID = 1002;
+    const USER_INVALID = 10002;
+
+    /**
+     * @Message("用户密码错误")
+     */
+    const USER_PASSWORD_INVALID = 10003;
 
     /**
      * @Message("当前记录不存在")
      */
-    const NOTE_NOT_EXIST = 1100;
+    const NOTE_NOT_EXIST = 11000;
 
-    /**
-     * @Message("涉嫌敏感话题，请修改后再试")
-     */
-    const SPAM_REJECT = 1201;
 }

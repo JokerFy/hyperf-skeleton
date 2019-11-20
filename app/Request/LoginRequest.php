@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Request;
 
 use App\Constants\ErrorCode;
-use App\Exception\ParameterException;
+use App\Exception\RequestException;
 use App\Model\SysUser;
 use App\Kernel\Http\Response;
 use App\Service\CommonService;
@@ -54,13 +54,13 @@ class LoginRequest extends FormRequest
 
     public function loginValidate($data)
     {
-
-        $admin = $this->sysUser::query()->where('username', $data['username'])->first()->toArray();
+        $admin = $this->sysUser::query()->where('username', $data['username'])->first();
         if(!$admin){
-            throw new ParameterException(['msg'=>'账号不存在']);
+            throw new RequestException(['code'=>ErrorCode::USER_NOT_EXIST]);
         }
+        $admin = $admin->toArray();
         if($admin['password'] != $this->common->setPassword($data['password'],$data['salt'])){
-            throw new ParameterException(['msg'=>'密码错误']);
+            throw new RequestException(['code'=>ErrorCode::USER_PASSWORD_INVALID]);
         }
         return $admin;
     }
