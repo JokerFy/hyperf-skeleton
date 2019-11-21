@@ -14,7 +14,7 @@ use Hyperf\HttpServer\Router\Router;
 
 //Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
 Router::addServer('websocket', function () {
-    Router::get('/', 'App\Controller\WebSocketController');
+    Router::get('/', 'App\Controller\Chat\ChatController');
 });
 
 Router::addGroup('/common/sys/', function () {
@@ -67,7 +67,7 @@ Router::addGroup('/hy-admin/', function () {
     Router::delete('sys/role/delete', 'App\Controller\Admin\SysRoleController@delete');
 
     Router::post('sys/user/test', 'App\Controller\Admin\SysUserController@test'); // 获取用户列表
-},['middleware' => [\App\Middleware\AdminMiddleware::class]]);
-//, ['middleware' => [\App\Middleware\JwtAuthMiddleware::class]]);
+});
+//, ['middleware' => [\App\Middleware\AdminMiddleware::class]];
 
 

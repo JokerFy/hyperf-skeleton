@@ -45,6 +45,7 @@
         "hyperf/validation": "^1.1",
         "phper666/jwt-auth": "~2.0.1",
         "ext-json": "*",
+        "ext-redis": "*",
         "hyperf/swagger": "^1.1"
     },
     "require-dev": {

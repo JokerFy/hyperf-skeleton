@@ -14,7 +14,8 @@ class CorsMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = Context::get(ResponseInterface::class);
-        $response = $response->withHeader('Access-Control-Allow-Origin', 'http://localhost:8001')
+        $response = $response->withHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8081')
+//            ->withHeader('Access-Control-Allow-Origin', 'http://localhost:8001)
             ->withHeader('Access-Control-Allow-Credentials', 'true')
             // Headers 可以根据实际情况进行改写。
             ->withHeader('Access-Control-Allow-Headers', 'Accept,X-Requested-With,XMLHttpRequest,DNT,Keep-Alive,User-Agent,Cache-Control,Content-Type,Authorization,token')
