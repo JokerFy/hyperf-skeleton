@@ -21,6 +21,9 @@ Router::addGroup('/common/sys/', function () {
     Router::post('login', 'App\Controller\Admin\SysLoginController@login');
 });
 
+Router::get('/coroutine/index', 'App\Controller\Coroutine\TrainController@index');
+Router::get('/coroutine/index2', 'App\Controller\Coroutine\TrainController@index2');
+
 
 Router::addGroup('/hy-admin/', function () {
     // 获取用户列表
